@@ -1,0 +1,31 @@
+321 CC Predi Dragos
+
+Router
+
+Caz 1) Router-u primeste un pachet de tip ARP-request:
+In acest caz modific pachetul primit cu informatiile necesare si il trimit inapoi pe aceasi interfata.
+Interschimb campurile source IP si source MAC cu target IP si target MAC, iar campurile de source IP si source MAC
+le voi completa cu IP si MAC-ul routerului pe interfata pe care a venit pachetul.
+
+Caz 2) Router-ul primeste un pachet de tip IP:
+Verific daca checksum-ul este corect, daca nu este arunc pachetul.
+Verific daca pachetul este destinat router-ului si raspund cu echo reply daca este
+Daca reusesc sa obtin din tabela de rutare ip-ul nextHopului:
+Caz 2a --in tabela de ARP gasesc adresa MAC coresponzatoare lui nextHop--
+--Daca ttl-u este >= 2
+ 	decrementez ttl-ul
+ 	recalculez checksum
+ 	trimit pachetul mai departe catre next hop 
+--Daca nu, trimit icmp time exceeded
+Caz 2b --intablea de ARP nu gasesc adresa MAC:
+	Bag pachetul in coada
+	trimit ARP request
+	astept reply
+	cache-uiesc reply-ul daca este unul valid
+	scot din coada pachetul
+	il trimit mai departe
+Daca nu reusesc sa obtin din tabela de rutare ip-ul nextHopului:
+Trimit ichmp host unreachable
+
+Pentru a rula mininet si testa functionalitatea : sudo python3 topo.py
+
